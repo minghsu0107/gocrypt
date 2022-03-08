@@ -1,6 +1,6 @@
 # Gocrypt
 
-### Latest stable version: ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/minghsu0107/gocrypt?label=Version&sort=semver)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/minghsu0107/gocrypt?label=Version&sort=semver)
 
 Gocrypt is a TUI based application that monitors cryptocurrency prices in real time, written in Go.
 
