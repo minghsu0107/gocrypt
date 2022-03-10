@@ -7,7 +7,25 @@ Gocrypt is a TUI based application that monitors cryptocurrency prices in real t
 <img width="1401" alt="image" src="https://user-images.githubusercontent.com/50090692/157175880-584d8b11-fb64-4826-b9a6-96822c7e9a8a.png">
 
 ## Installation
-
+### Install Binaries
+For Mac (amd64):
+```bash
+VERSION=v1.0.2
+wget "https://github.com/minghsu0107/gocrypt/releases/download/${VERSION}/gocrypt-${VERSION}-darwin-amd64.tar.gz"
+tar -xzvf "gocrypt-${VERSION}-darwin-amd64.tar.gz"
+```
+For Mac (arm64):
+```bash
+VERSION=v1.0.2
+wget "https://github.com/minghsu0107/gocrypt/releases/download/${VERSION}/gocrypt-${VERSION}-darwin-arm64.tar.gz"
+tar -xzvf "gocrypt-${VERSION}-darwin-arm64.tar.gz"
+```
+For Linux:
+```bash
+VERSION=v1.0.2
+wget "https://github.com/minghsu0107/gocrypt/releases/download/${VERSION}/gocrypt-${VERSION}-linux-amd64.tar.gz"
+tar -xzvf "gocrypt-${VERSION}-linux-amd64.tar.gz"
+```
 ### Using Go
 
 ```bash
@@ -23,13 +41,13 @@ Set `VERSION` to a specific version for stable builds. Omitting `VERSION` uses t
 make docker-pull
 
 # Pull specific version of image
-VERSION=v1.0.0 make docker-pull
+VERSION=v1.0.2 make docker-pull
 
 # Run image
 make docker-run
 
 # Run specific version of image
-VERSION=v1.0.0 make docker-run
+VERSION=v1.0.2 make docker-run
 
 # Run image with portfolio command
 ARG=portfolio make docker-run
