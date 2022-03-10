@@ -1,0 +1,6 @@
+currency:
+  initUnit: "new-taiwan-dollar"
+root:
+  user: "ming" # user for root command
+portfolio:
+  user: "ming" # user for portfolio command
