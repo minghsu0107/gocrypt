@@ -71,11 +71,24 @@ make build
 ```
 
 ## Usage
+```
+Usage:
+  gocrypt [flags]
+  gocrypt [command]
 
-Gocrypt helps you look at cryptocurrency values, details and track your crypto portfolio straight from your terminal.
+Available Commands:
+  help        Help about any command
+  portfolio   Track your portfolio
+  version     Print the current version
 
-It makes use of the API provided by [CoinCap.io](https://coincap.io/) and [CoinGecko](https://www.coingecko.com/en) to provide the required details.
+Flags:
+  -c, --config string               config file (default is $HOME/.gocrypt.yaml)
+  -i, --currency-init-unit string   initial currency unit
+  -h, --help                        help for gocrypt
+  -u, --user string                 root user
+```
 
+Gocrypt makes use of the API provided by [CoinCap.io](https://coincap.io/) and [CoinGecko](https://www.coingecko.com/en) to provide the required details.
 ### Main Page
 - Top 3 currencies (as ranked by Market Cap) are displayed with their graphs on top.
 - A coin table is provided with relevant information about other currencies.
@@ -143,8 +156,21 @@ Key-bindings can be found by pressing `?`. This displays the help prompt.
 	-	`<C>`: Select Currency (from full list)
 
 ### Portfolio Page
-- GOcrypt allows you to track your crypto portfolio through a separately defined page.
+- Gocrypt allows you to track your crypto portfolio through a separately defined page.
 - This page can be accessed with the command `gocrypt portfolio`.
+
+```
+Usage:
+  gocrypt portfolio [flags]
+
+Flags:
+  -h, --help          help for portfolio
+  -u, --user string   portfolio user
+
+Global Flags:
+  -c, --config string               config file (default is $HOME/.gocrypt.yaml)
+  -i, --currency-init-unit string   initial currency unit
+```
 
 Key-bindings:
 
