@@ -11,6 +11,7 @@ import (
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
 	"github.com/minghsu0107/gocrypt/pkg/widgets"
+	"github.com/spf13/viper"
 )
 
 // DisplayCoin displays the per coin values and details along with a favourites table. It uses the same uiEvents channel as the root page
@@ -52,10 +53,11 @@ func DisplayCoin(
 	}
 
 	// Initialise portfolio
-	favourites := utils.GetFavourites()
-	portfolioMap := utils.GetPortfolio()
+	rootUser := viper.GetViper().GetString("root.user")
+	favourites := utils.GetFavourites(rootUser)
+	portfolioMap := utils.GetPortfolio(rootUser)
 	defer func() {
-		utils.SaveMetadata(favourites, currencyID, portfolioMap)
+		utils.SaveMetadata(favourites, currencyID, rootUser, portfolioMap)
 	}()
 
 	// Initiliase Portfolio Table

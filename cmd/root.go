@@ -23,6 +23,7 @@ var rootCmd = &cobra.Command{
 	Use:   "gocrypt",
 	Short: "A terminal application to watch crypto prices!",
 	Long:  `gocrypt is a TUI based application that monitors cryptocurrency prices in real time, written in Go.`,
+	// Run: func(cmd *cobra.Command, args []string) {},
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		// Context and errgroup used to manage routines
@@ -63,18 +64,24 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.gocrypt.yaml)")
+	rootCmd.PersistentFlags().StringP("currency-init-unit", "i", "", "initial currency unit")
+
+	// local flags
+	rootCmd.Flags().StringP("user", "u", "", "root user")
+
+	// bind global flags to viper
+	viper.BindPFlag("currency.initUnit", rootCmd.PersistentFlags().Lookup("currency-init-unit"))
+	viper.SetDefault("currency.initUnit", "united-states-dollar")
+
+	// bind local flags to viper
+	viper.BindPFlag("root.user", rootCmd.Flags().Lookup("user"))
+	viper.SetDefault("root.user", "default")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	setDefault()
-
 	viper.SetConfigType("yaml")
-	viper.SetEnvPrefix("GOCRYPT")
-	viper.AutomaticEnv()                                   // read in environment variables that match
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // eg. GOCRYPT_CURRENCY_INITUNIT=new-taiwan-dollar ./gocrypt
 
 	if cfgFile != "" {
 		// Use config file from the flag.
@@ -93,8 +100,10 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
-}
 
-func setDefault() {
-	viper.SetDefault("currency.initUnit", "united-states-dollar")
+	// read in environment variables that match
+	// eg. GOCRYPT_CURRENCY_INITUNIT=new-taiwan-dollar ./gocrypt
+	viper.SetEnvPrefix("GOCRYPT")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.AutomaticEnv()
 }

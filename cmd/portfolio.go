@@ -6,6 +6,7 @@ import (
 	"github.com/minghsu0107/gocrypt/pkg/api"
 	"github.com/minghsu0107/gocrypt/pkg/display/portfolio"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -43,4 +44,11 @@ var portfolioCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(portfolioCmd)
+
+	// local flags
+	portfolioCmd.Flags().StringP("user", "u", "", "portfolio user")
+
+	// bind local flags to viper
+	viper.BindPFlag("portfolio.user", portfolioCmd.Flags().Lookup("user"))
+	viper.SetDefault("portfolio.user", "default")
 }

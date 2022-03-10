@@ -9,10 +9,13 @@ import (
 
 // Metadata holds persistent information to be stored to disk
 type Metadata struct {
-	Favourites map[string]bool    `json:"favourites"`
-	Currency   string             `json:"currency"`
-	Portfolio  map[string]float64 `json:"portfolio"`
+	Currency      string                `json:"currency"`
+	FavouritesMap map[string]Favourites `json:"favourites_map"`
+	PortfolioMap  map[string]Portfolio  `json:"portfolio_map"`
 }
+
+type Favourites map[string]bool
+type Portfolio map[string]float64
 
 // Currency holds currency data when fetched from CoinCap
 type Currency struct {
@@ -31,7 +34,7 @@ type AllCurrencyData struct {
 
 // GetFavourites reads stored favourite coin details from
 // ~/.gocrypt-data.json and returns a map.
-func GetFavourites() map[string]bool {
+func GetFavourites(user string) map[string]bool {
 	metadata := Metadata{}
 
 	// Get home directory
@@ -58,8 +61,13 @@ func GetFavourites() map[string]bool {
 		return map[string]bool{}
 	}
 
-	if len(metadata.Favourites) > 0 {
-		return metadata.Favourites
+	favourites, ok := metadata.FavouritesMap[user]
+	if !ok {
+		return map[string]bool{}
+	}
+
+	if len(favourites) > 0 {
+		return favourites
 	}
 
 	return map[string]bool{}
@@ -67,7 +75,7 @@ func GetFavourites() map[string]bool {
 
 // GetPortfolio reads stored portfolio details from
 // ~/.gocrypt-data.json and returns a map.
-func GetPortfolio() map[string]float64 {
+func GetPortfolio(portfolioUser string) map[string]float64 {
 	metadata := Metadata{}
 
 	// Get home directory
@@ -94,8 +102,12 @@ func GetPortfolio() map[string]float64 {
 		return map[string]float64{}
 	}
 
-	if len(metadata.Portfolio) > 0 {
-		return metadata.Portfolio
+	portfolio, ok := metadata.PortfolioMap[portfolioUser]
+	if !ok {
+		return map[string]float64{}
+	}
+	if len(portfolio) > 0 {
+		return portfolio
 	}
 
 	return map[string]float64{}
@@ -134,25 +146,57 @@ func GetCurrencyID() string {
 
 // SaveMetadata exports favourites, currency and portfolio to disk.
 // Data is saved on ~/.gocrypt-data.json
-func SaveMetadata(favourites map[string]bool, currency string, portfolio map[string]float64) error {
+func SaveMetadata(favourites map[string]bool, currency string, user string, portfolio map[string]float64) error {
+	var metadata Metadata
 	// Get Home directory
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		return err
 	}
 
+	// Check if metadata file exists
+	configPath := homeDir + "/.gocrypt-data.json"
+	_, err = os.Stat(configPath)
+	if os.IsNotExist(err) {
+		favouritesMap := make(map[string]Favourites)
+		favouritesMap[user] = favourites
+
+		portfolioMap := make(map[string]Portfolio)
+		portfolioMap[user] = portfolio
+
+		metadata = Metadata{
+			Currency:      currency,
+			FavouritesMap: favouritesMap,
+			PortfolioMap:  portfolioMap,
+		}
+	} else {
+		// Open file
+		configFile, err := os.Open(configPath)
+		if err != nil {
+			return err
+		}
+
+		// Read content
+		err = json.NewDecoder(configFile).Decode(&metadata)
+		if err != nil {
+			return err
+		}
+
+		// Set data
+		metadata.Currency = currency
+		metadata.FavouritesMap[user] = favourites
+		metadata.PortfolioMap[user] = portfolio
+	}
+
+	return writeMetaData(homeDir, &metadata)
+}
+
+func writeMetaData(homeDir string, metadata *Metadata) error {
 	// configPath and hidden path are used explicitly because we
 	// get a permission denied error on trying to write/create
 	// to a hidden file
 	configPath := homeDir + "/gocrypt-data.json"
 	hiddenPath := homeDir + "/.gocrypt-data.json"
-
-	// Create data
-	metadata := Metadata{
-		Favourites: favourites,
-		Currency:   currency,
-		Portfolio:  portfolio,
-	}
 
 	data, err := json.MarshalIndent(metadata, "", "\t")
 	if err != nil {
@@ -170,6 +214,5 @@ func SaveMetadata(favourites map[string]bool, currency string, portfolio map[str
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

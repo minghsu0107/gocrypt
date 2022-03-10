@@ -13,6 +13,7 @@ import (
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
 	"github.com/minghsu0107/gocrypt/pkg/widgets"
+	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -39,18 +40,21 @@ func DisplayPortfolio(ctx context.Context, dataChannel chan api.AssetData, sendD
 	currencyID := utils.GetCurrencyID()
 	currencyID, currency, currencyVal := currencyWidget.Get(currencyID)
 
+	// get portfolio user
+	portfolioUser := viper.GetViper().GetString("portfolio.user")
+
 	// get portfolio details
-	portfolioMap := utils.GetPortfolio()
+	portfolioMap := utils.GetPortfolio(portfolioUser)
 
 	// get performers map
 	performersMap := getEmptyPerformers()
 
 	// get favourites
-	favourites := utils.GetFavourites()
+	favourites := utils.GetFavourites(portfolioUser)
 
 	// Save metadata back to disk
 	defer func() {
-		utils.SaveMetadata(favourites, currencyID, portfolioMap)
+		utils.SaveMetadata(favourites, currencyID, portfolioUser, portfolioMap)
 	}()
 
 	// Initialise help menu
@@ -270,7 +274,7 @@ func DisplayPortfolio(ctx context.Context, dataChannel chan api.AssetData, sendD
 							})
 						}
 
-						utils.SaveMetadata(favourites, currencyID, portfolioMap)
+						utils.SaveMetadata(favourites, currencyID, portfolioUser, portfolioMap)
 
 						// Serve Visuals for coin
 						eg.Go(func() error {

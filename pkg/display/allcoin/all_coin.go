@@ -14,6 +14,7 @@ import (
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
 	"github.com/minghsu0107/gocrypt/pkg/widgets"
+	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -66,11 +67,12 @@ func DisplayAllCoins(ctx context.Context, dataChannel chan api.AssetData, sendDa
 	utilitySelected := uw.None
 
 	// Initialise favourites and portfolio
-	portfolioMap := utils.GetPortfolio()
-	favourites := utils.GetFavourites()
+	rootUser := viper.GetViper().GetString("root.user")
+	portfolioMap := utils.GetPortfolio(rootUser)
+	favourites := utils.GetFavourites(rootUser)
 
 	defer func() {
-		utils.SaveMetadata(favourites, currencyID, portfolioMap)
+		utils.SaveMetadata(favourites, currencyID, rootUser, portfolioMap)
 	}()
 
 	// Initialise Help Menu
@@ -432,7 +434,7 @@ func DisplayAllCoins(ctx context.Context, dataChannel chan api.AssetData, sendDa
 							})
 						}
 
-						utils.SaveMetadata(favourites, currencyID, portfolioMap)
+						utils.SaveMetadata(favourites, currencyID, rootUser, portfolioMap)
 
 						// Serve Visuals for coin
 						eg.Go(func() error {
