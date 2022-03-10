@@ -1,5 +1,5 @@
 VERSION ?= latest
-ARG ?= --config config-example.yml
+ARG ?=
 
 ##@ General
 
@@ -21,17 +21,17 @@ deps: ## Install dependencies
 	go mod download
 
 build: ## Build binary.
-	go build gocrypt.go
+	go build -ldflags "-X github.com/minghsu0107/gocrypt/cmd.Version=$(VERSION)" gocrypt.go
 
 all: deps test ## Install deps, test and build binary.
 	make build
 
 ##@ Docker
 docker-build: ## Build docker image.
-	docker build -t minghsu0107/gocrypt .
+	docker build --build-arg VERSION=$(VERSION) -f Dockerfile -t minghsu0107/gocrypt .
 
 docker-pull: ## Pull docker image.
 	docker pull minghsu0107/gocrypt:$(VERSION)
 
 docker-run: ## Run docker image.
-	docker run -u $(id -u):$(id -g) -v "$(HOME):/home/appuser/" --rm -it minghsu0107/gocrypt:$(VERSION) $(ARG)
+	docker run -u $(shell id -u):$(shell id -g) -v "$(HOME):/home/appuser/" --rm -it minghsu0107/gocrypt:$(VERSION) $(ARG)

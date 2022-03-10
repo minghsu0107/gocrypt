@@ -1,8 +1,9 @@
 FROM golang:1.17 as builder
 WORKDIR /app
 COPY . .
+ARG VERSION
 RUN CGO_ENABLED=0 GOOS=linux \
-    go build --ldflags "-s -w" -a -o ./output/gocrypt ./gocrypt.go
+    go build --ldflags "-X github.com/minghsu0107/gocrypt/cmd.Version=`echo $VERSION` -s -w" -a -o ./output/gocrypt ./gocrypt.go
 
 FROM alpine:3.14
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
