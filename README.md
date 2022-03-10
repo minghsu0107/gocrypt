@@ -7,7 +7,7 @@ Gocrypt is a TUI based application that monitors cryptocurrency prices in real t
 <img width="1401" alt="image" src="https://user-images.githubusercontent.com/50090692/157175880-584d8b11-fb64-4826-b9a6-96822c7e9a8a.png">
 
 ## Installation
-### Install Binaries
+### Using Binary
 For Mac (amd64):
 ```bash
 VERSION=v1.0.2
