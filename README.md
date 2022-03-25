@@ -4,7 +4,7 @@
 
 Gocrypt is a TUI based application that monitors cryptocurrency prices in real time, written in Go.
 
-<img width="1401" alt="image" src="https://user-images.githubusercontent.com/50090692/157175880-584d8b11-fb64-4826-b9a6-96822c7e9a8a.png">
+![image](https://user-images.githubusercontent.com/50090692/160075949-2bd0ef01-5a4a-433f-9fef-a2357f646cb5.png)
 
 ## Installation
 ### Using Binary
