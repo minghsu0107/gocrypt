@@ -115,7 +115,7 @@ Gocrypt makes use of the API provided by [CoinCap.io](https://coincap.io/) and [
 
 Key-bindings can be found by pressing `?`. This displays the help prompt.
 
--	**Quit**: `q` or `<C-c>`
+-	**Quit**: `q` or `<Ctrl-c>`
 -	**Table Navigation**
 	-	`k` and `<Up>`: up
 	-	`j` and `<Down>`: down
@@ -153,14 +153,14 @@ Key-bindings can be found by pressing `?`. This displays the help prompt.
 
 Key-bindings can be found by pressing `?`. This displays the help prompt.
 
--	**Quit**: `q` or `<C-c>`
+-	**Quit**: `q` or `<Ctrl-c>`
 -	**Table Navigation**
 	-	`k` and `<Up>`: up
 	-	`j` and `<Down>`: down
-	-	`<C-u>`: half page up
-	-	`<C-d>`: half page down
-	-	`<C-b>`: full page up
-	-	`<C-f>`: full page down
+	-	`<Ctrl-u>`: half page up
+	-	`<Ctrl-d>`: half page down
+	-	`<Ctrl-b>`: full page up
+	-	`<Ctrl-f>`: full page down
 	-	`gg` and `<Home>`: jump to top
 	-	`G` and `<End>`: jump to bottom
 	-	`f`: focus favourites table
@@ -172,6 +172,7 @@ Key-bindings can be found by pressing `?`. This displays the help prompt.
 -	**Actions**
 	-	`<c>`: Select Currency (from popular list)
 	-	`<C>`: Select Currency (from full list)
+	-	`d`: Select time interval
 
 ### Portfolio Page
 - Gocrypt allows you to track your crypto portfolio through a separately defined page.
@@ -192,14 +193,14 @@ Global Flags:
 
 Key-bindings:
 
--	**Quit: `q` or `<C-c>`**
+-	**Quit: `q` or `<Ctrl-c>`**
 -	**Table Navigation**
 	-	`k` and `<Up>`: up
 	-	`j` and `<Down>`: down
-	-	`<C-u>`: half page up
-	-	`<C-d>`: half page down
-	-	`<C-b>`: full page up
-	-	`<C-f>`: full page down
+	-	`<Ctrl-u>`: half page up
+	-	`<Ctrl-d>`: half page down
+	-	`<Ctrl-b>`: full page up
+	-	`<Ctrl-f>`: full page down
 	-	`gg` and `<Home>`: jump to top
 	-	`G` and `<End>`: jump to bottom
 -	**Sorting**
