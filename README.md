@@ -136,12 +136,12 @@ Key-bindings can be found by pressing `?`. This displays the help prompt.
 		-  Mac user should press `fn + F-column number`
 	-	Eg: 1 to sort ascending on 1st Col and F1 for descending
 -	**Actions (Coin Table)**
-	-	`<c>`: Select Currency (from popular list)
-	-	`<C>`: Select Currency (from full list)
+	-	`c`: Select Currency (from popular list)
+	-	`C`: Select Currency (from full list)
 	-	`e`: Add/Edit coin to Portfolio
 	-	`P`: View portfolio
-	-	`<s>`: Star, save to favourites
-	-	`<S>`: UnStar,remove from favourites
+	-	`s`: Star, save to favourites
+	-	`S`: UnStar,remove from favourites
 	-	`<Enter>`: View Coin Information
 	-	`%`: Select Duration for Percentage Change
 
@@ -170,8 +170,8 @@ Key-bindings can be found by pressing `?`. This displays the help prompt.
 	-	Use `<F-column number>` to sort descending.
 	-	Eg: `1` to sort ascending on 1st Col and `F1` for descending
 -	**Actions**
-	-	`<c>`: Select Currency (from popular list)
-	-	`<C>`: Select Currency (from full list)
+	-	`c`: Select Currency (from popular list)
+	-	`C`: Select Currency (from full list)
 	-	`d`: Select time interval
 
 ### Portfolio Page
