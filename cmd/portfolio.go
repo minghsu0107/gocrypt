@@ -54,5 +54,5 @@ func init() {
 	portfolioCmd.Flags().StringP("puser", "p", "", "portfolio user")
 
 	// bind local flags to viper
-	viper.BindPFlag("portfolio.user", portfolioCmd.Flags().Lookup("p"))
+	viper.BindPFlag("portfolio.user", portfolioCmd.Flags().Lookup("puser"))
 }
