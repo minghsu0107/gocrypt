@@ -11,6 +11,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"github.com/minghsu0107/gocrypt/pkg/api"
+	"github.com/minghsu0107/gocrypt/pkg/config"
 	"github.com/minghsu0107/gocrypt/pkg/display/allcoin"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -25,7 +26,10 @@ var rootCmd = &cobra.Command{
 	Long:  `gocrypt is a TUI based application that monitors cryptocurrency prices in real time, written in Go.`,
 	// Run: func(cmd *cobra.Command, args []string) {},
 	RunE: func(cmd *cobra.Command, args []string) error {
-
+		conf, err := config.NewConfig()
+		if err != nil {
+			return err
+		}
 		// Context and errgroup used to manage routines
 		eg, ctx := errgroup.WithContext(context.Background())
 		dataChannel := make(chan api.AssetData)
@@ -40,7 +44,7 @@ var rootCmd = &cobra.Command{
 
 		// Display UI for overall coins
 		eg.Go(func() error {
-			return allcoin.DisplayAllCoins(ctx, dataChannel, &sendData)
+			return allcoin.DisplayAllCoins(ctx, conf, dataChannel, &sendData)
 		})
 
 		if err := eg.Wait(); err != nil {
@@ -72,11 +76,9 @@ func init() {
 
 	// bind global flags to viper
 	viper.BindPFlag("currency.initUnit", rootCmd.PersistentFlags().Lookup("currency-init-unit"))
-	viper.SetDefault("currency.initUnit", "united-states-dollar")
 
 	// bind local flags to viper
 	viper.BindPFlag("root.user", rootCmd.Flags().Lookup("user"))
-	viper.SetDefault("root.user", "default")
 }
 
 // initConfig reads in config file and ENV variables if set.

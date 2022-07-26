@@ -24,6 +24,6 @@ jobs:
           github_token: ${{ secrets.GO_RELEASER_GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          goversion: 1.17
+          goversion: 1.18
           binary_name: gocrypt
           ldflags: "-X github.com/minghsu0107/gocrypt/cmd.Version=${{ github.ref_name }} -s -w"

@@ -183,8 +183,8 @@ Usage:
   gocrypt portfolio [flags]
 
 Flags:
-  -h, --help          help for portfolio
-  -u, --user string   portfolio user
+  -h, --help           help for portfolio
+  -p, --puser string   portfolio user
 
 Global Flags:
   -c, --config string               config file (default is $HOME/.gocrypt.yaml)

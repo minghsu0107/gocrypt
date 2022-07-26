@@ -10,6 +10,7 @@ import (
 
 	ui "github.com/gizak/termui/v3"
 	"github.com/minghsu0107/gocrypt/pkg/api"
+	"github.com/minghsu0107/gocrypt/pkg/config"
 	"github.com/minghsu0107/gocrypt/pkg/display/coin"
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
@@ -35,7 +36,7 @@ func filterRows(allRows [][]string, filter string, m *sync.Mutex) [][]string {
 
 // DisplayAllCoins displays the main page with top coin prices, favourites and
 // general coin asset data
-func DisplayAllCoins(ctx context.Context, dataChannel chan api.AssetData, sendData *bool) error {
+func DisplayAllCoins(ctx context.Context, conf *config.Config, dataChannel chan api.AssetData, sendData *bool) error {
 
 	// Initialise UI
 	if err := ui.Init(); err != nil {
@@ -440,6 +441,8 @@ func DisplayAllCoins(ctx context.Context, dataChannel chan api.AssetData, sendDa
 						eg.Go(func() error {
 							err := coin.DisplayCoin(
 								coinCtx,
+								conf,
+								coin.MainDisplay,
 								coinGeckoID,
 								coinIDMap,
 								intervalChannel,

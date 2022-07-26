@@ -8,15 +8,24 @@ import (
 
 	ui "github.com/gizak/termui/v3"
 	"github.com/minghsu0107/gocrypt/pkg/api"
+	"github.com/minghsu0107/gocrypt/pkg/config"
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
 	"github.com/minghsu0107/gocrypt/pkg/widgets"
-	"github.com/spf13/viper"
+)
+
+type DisplayType string
+
+var (
+	MainDisplay      DisplayType = "main"
+	PortfolioDisplay DisplayType = "portfolio"
 )
 
 // DisplayCoin displays the per coin values and details along with a favourites table. It uses the same uiEvents channel as the root page
 func DisplayCoin(
 	ctx context.Context,
+	conf *config.Config,
+	displayType DisplayType,
 	id string,
 	coinIDs api.CoinIDMap,
 	intervalChannel chan string,
@@ -53,11 +62,19 @@ func DisplayCoin(
 	}
 
 	// Initialise portfolio
-	rootUser := viper.GetViper().GetString("root.user")
-	favourites := utils.GetFavourites(rootUser)
-	portfolioMap := utils.GetPortfolio(rootUser)
+	var user string
+	switch displayType {
+	case MainDisplay:
+		user = conf.Root.User
+	case PortfolioDisplay:
+		user = conf.Portfolio.User
+	default:
+		user = conf.Root.User
+	}
+	favourites := utils.GetFavourites(user)
+	portfolioMap := utils.GetPortfolio(user)
 	defer func() {
-		utils.SaveMetadata(favourites, currencyID, rootUser, portfolioMap)
+		utils.SaveMetadata(favourites, currencyID, user, portfolioMap)
 	}()
 
 	// Initiliase Portfolio Table

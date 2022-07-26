@@ -9,16 +9,16 @@ import (
 
 	ui "github.com/gizak/termui/v3"
 	"github.com/minghsu0107/gocrypt/pkg/api"
+	"github.com/minghsu0107/gocrypt/pkg/config"
 	"github.com/minghsu0107/gocrypt/pkg/display/coin"
 	uw "github.com/minghsu0107/gocrypt/pkg/display/utilitywidgets"
 	"github.com/minghsu0107/gocrypt/pkg/utils"
 	"github.com/minghsu0107/gocrypt/pkg/widgets"
-	"github.com/spf13/viper"
 	"golang.org/x/sync/errgroup"
 )
 
 // DisplayPortfolio serves the prtfolio page
-func DisplayPortfolio(ctx context.Context, dataChannel chan api.AssetData, sendData *bool) error {
+func DisplayPortfolio(ctx context.Context, conf *config.Config, dataChannel chan api.AssetData, sendData *bool) error {
 
 	// Initialise UI
 	if err := ui.Init(); err != nil {
@@ -41,7 +41,7 @@ func DisplayPortfolio(ctx context.Context, dataChannel chan api.AssetData, sendD
 	currencyID, currency, currencyVal := currencyWidget.Get(currencyID)
 
 	// get portfolio user
-	portfolioUser := viper.GetViper().GetString("portfolio.user")
+	portfolioUser := conf.Portfolio.User
 
 	// get portfolio details
 	portfolioMap := utils.GetPortfolio(portfolioUser)
@@ -280,6 +280,8 @@ func DisplayPortfolio(ctx context.Context, dataChannel chan api.AssetData, sendD
 						eg.Go(func() error {
 							err := coin.DisplayCoin(
 								coinCtx,
+								conf,
+								coin.PortfolioDisplay,
 								coinGeckoID,
 								coinIDMap,
 								intervalChannel,

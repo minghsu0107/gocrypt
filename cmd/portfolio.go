@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/minghsu0107/gocrypt/pkg/api"
+	"github.com/minghsu0107/gocrypt/pkg/config"
 	"github.com/minghsu0107/gocrypt/pkg/display/portfolio"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -16,6 +17,10 @@ var portfolioCmd = &cobra.Command{
 	Short: "Track your portfolio",
 	Long:  `The portfolio command helps track your own portfolio in real time`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		conf, err := config.NewConfig()
+		if err != nil {
+			return err
+		}
 		// Context and errgroup used to manage routines
 		eg, ctx := errgroup.WithContext(context.Background())
 		dataChannel := make(chan api.AssetData)
@@ -30,7 +35,7 @@ var portfolioCmd = &cobra.Command{
 
 		// Display UI for portfolio
 		eg.Go(func() error {
-			return portfolio.DisplayPortfolio(ctx, dataChannel, &sendData)
+			return portfolio.DisplayPortfolio(ctx, conf, dataChannel, &sendData)
 		})
 
 		if err := eg.Wait(); err != nil {
@@ -46,9 +51,8 @@ func init() {
 	rootCmd.AddCommand(portfolioCmd)
 
 	// local flags
-	portfolioCmd.Flags().StringP("user", "u", "", "portfolio user")
+	portfolioCmd.Flags().StringP("puser", "p", "", "portfolio user")
 
 	// bind local flags to viper
-	viper.BindPFlag("portfolio.user", portfolioCmd.Flags().Lookup("user"))
-	viper.SetDefault("portfolio.user", "default")
+	viper.BindPFlag("portfolio.user", portfolioCmd.Flags().Lookup("p"))
 }
