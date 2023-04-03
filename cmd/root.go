@@ -20,6 +20,12 @@ import (
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
+// order:
+// 1. bind flags to viper
+// 2. read config file
+// 3. read env
+// 4. set viper defaults
+// 5. unmarshal viper to config struct
 var rootCmd = &cobra.Command{
 	Use:   "gocrypt",
 	Short: "A terminal application to watch crypto prices!",
@@ -62,7 +68,6 @@ func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
 }
 
-// execution order: bind flags to viper -> read config file -> read env -> set viper defaults -> unmarshal viper to config struct
 func init() {
 	// initConfig is called just before executing rootCmd.RunE
 	cobra.OnInitialize(initConfig)
