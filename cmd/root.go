@@ -62,6 +62,7 @@ func Execute() {
 	cobra.CheckErr(rootCmd.Execute())
 }
 
+// execution order: bind flags to viper -> read config file -> read env -> set viper defaults -> unmarshal viper to config struct
 func init() {
 	// initConfig is called just before executing rootCmd.RunE
 	cobra.OnInitialize(initConfig)
