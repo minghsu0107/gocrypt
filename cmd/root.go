@@ -63,6 +63,7 @@ func Execute() {
 }
 
 func init() {
+	// initConfig is called just before executing rootCmd.RunE
 	cobra.OnInitialize(initConfig)
 
 	// Here you will define your flags and configuration settings.
